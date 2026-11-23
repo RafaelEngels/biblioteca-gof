@@ -1,0 +1,25 @@
+@startuml
+title R8 - Abstract Factory
+interface FabricaDeAcesso { +unidade()\n+livros()\n+movimentacao()\n+relacionamento() }
+class FabricaEmMemoria
+class FabricaRelacional
+interface UnidadeDeTrabalho
+interface RepositorioLivro
+interface RepositorioMovimentacao
+interface RepositorioRelacionamento
+FabricaEmMemoria ..|> FabricaDeAcesso
+FabricaRelacional ..|> FabricaDeAcesso
+UnidadeEmMemoria ..|> UnidadeDeTrabalho
+UnidadeJdbc ..|> UnidadeDeTrabalho
+LivrosEmMemoria ..|> RepositorioLivro
+LivrosJdbc ..|> RepositorioLivro
+MovimentacaoEmMemoria ..|> RepositorioMovimentacao
+MovimentacaoJdbc ..|> RepositorioMovimentacao
+RelacionamentoEmMemoria ..|> RepositorioRelacionamento
+RelacionamentoJdbc ..|> RepositorioRelacionamento
+FabricaEmMemoria ..> UnidadeEmMemoria
+FabricaRelacional ..> UnidadeJdbc
+LivrosJdbc --> UnidadeJdbc
+MovimentacaoJdbc --> UnidadeJdbc
+RelacionamentoJdbc --> UnidadeJdbc
+@enduml

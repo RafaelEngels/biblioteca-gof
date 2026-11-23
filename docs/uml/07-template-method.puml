@@ -1,0 +1,16 @@
+@startuml
+title R7 - Template Method
+abstract class "CadastroTemplate<D,T>" as CT { +{final} incluir(d : D) : T\n#buscarExistente(d)\n#validar(d)\n#verificarPreRequisitos(d)\n#criar(d)\n#armazenar(t)\n#apresentar(t)\n#depoisDeArmazenar(t) <<gancho>> }
+class CadastroLivro
+class CadastroPessoa
+class CadastroEstudante
+class CadastroAtendente
+CadastroLivro --|> CT
+CadastroPessoa --|> CT
+CadastroEstudante --|> CT
+CadastroAtendente --|> CT
+Livro ..|> iLivro
+Pessoa ..|> iPessoa
+Estudante ..|> iEstudante
+Atendente ..|> iAtendente
+@enduml

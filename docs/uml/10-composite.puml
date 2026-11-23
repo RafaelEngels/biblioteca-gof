@@ -1,0 +1,9 @@
+@startuml
+title R10 - Composite
+abstract class ComponenteDoAcervo { +nome()\n+contarLivros() : int\n+listarLivros() : List<String> }
+class Grupo { +adicionar(c)\n+remover(c)\n+moverLivro(id, destino) }
+class ItemLivro { -idLivro : String }
+Grupo --|> ComponenteDoAcervo
+ItemLivro --|> ComponenteDoAcervo
+Grupo o-- "*" ComponenteDoAcervo : filhos
+@enduml

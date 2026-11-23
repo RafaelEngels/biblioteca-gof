@@ -1,0 +1,12 @@
+@startuml
+title R9 - Decorator
+interface ConsultaAcervo { +metadados(id) : Optional<MetadadosLivro>\n+estadoAtual(id) : Optional<String> }
+class ConsultaAcervoOriginal
+class ConsultaComMedicao
+class ConsultaComCache
+ConsultaAcervoOriginal ..|> ConsultaAcervo
+ConsultaComMedicao ..|> ConsultaAcervo
+ConsultaComCache ..|> ConsultaAcervo
+ConsultaComMedicao o-- ConsultaAcervo : proxima
+ConsultaComCache o-- ConsultaAcervo : proxima
+@enduml

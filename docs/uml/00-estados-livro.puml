@@ -1,0 +1,15 @@
+@startuml
+title Maquina de estados - Livro
+[*] --> LIVRE : inserirLivro
+LIVRE --> RESERVADO : reservarLivro [estudante cadastrado] / adicionar(reserva)
+RESERVADO --> EMPRESTADO : emprestarLivro [reserva do mesmo estudante] / adicionar(emprestimo)
+EMPRESTADO --> RENOVADO : renovarEmprestimo [numRenovacoes < 2] / renovar()
+RENOVADO --> RENOVADO : renovarEmprestimo [numRenovacoes < 2] / renovar()
+EMPRESTADO --> DEVOLVIDO : registrarDevolucao
+RENOVADO --> DEVOLVIDO : registrarDevolucao
+DEVOLVIDO --> LIVRE : inspecionar [livro em bom estado]
+DEVOLVIDO --> REPARANDO : inspecionar [livro danificado] / enviarParaReparo
+REPARANDO --> LIVRE : retornarDoReparo
+REPARANDO --> INCINERADO : laudoIrrecuperavel
+INCINERADO --> [*]
+@enduml

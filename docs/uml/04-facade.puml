@@ -1,0 +1,20 @@
+@startuml
+title R4 - Facade
+class FachadaDeCirculacao { +reservar()\n+efetivarEmprestimo()\n+renovar()\n+registrarDevolucao()\n+inspecionar() }
+class Comprovante <<record>>
+interface RepositorioRelacionamento
+interface RepositorioMovimentacao
+interface RepositorioLivro
+interface UnidadeDeTrabalho
+class Livro
+class TratadorDeEmprestimo
+class TratadorDeDevolucao
+TratadorDeEmprestimo --> FachadaDeCirculacao
+TratadorDeDevolucao --> FachadaDeCirculacao
+FachadaDeCirculacao --> RepositorioRelacionamento
+FachadaDeCirculacao --> RepositorioMovimentacao
+FachadaDeCirculacao --> RepositorioLivro
+FachadaDeCirculacao --> UnidadeDeTrabalho
+FachadaDeCirculacao ..> Livro
+FachadaDeCirculacao ..> Comprovante : devolve
+@enduml

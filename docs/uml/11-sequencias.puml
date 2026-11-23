@@ -1,0 +1,59 @@
+@startuml
+title SD - Efetivar emprestimo (R4)
+actor Atendente
+Atendente -> TratadorDeEmprestimo : emprestarLivro(idLivro, idEstudante, idAtendente)
+TratadorDeEmprestimo -> FachadaDeCirculacao : efetivarEmprestimo(...)
+FachadaDeCirculacao -> UnidadeDeTrabalho : iniciar()
+FachadaDeCirculacao -> RepositorioMovimentacao : buscarReserva(idLivro, idEstudante)
+FachadaDeCirculacao -> RepositorioMovimentacao : removerReserva(reserva)
+FachadaDeCirculacao -> RepositorioMovimentacao : adicionarEmprestimo(emprestimo)
+FachadaDeCirculacao -> Livro : emprestar()
+Livro -> EstadoReservado : emprestar(livro)
+EstadoReservado -> Livro : setEstado(EstadoEmprestado)
+FachadaDeCirculacao -> RepositorioLivro : salvar(livro)
+FachadaDeCirculacao -> UnidadeDeTrabalho : confirmar()
+FachadaDeCirculacao --> TratadorDeEmprestimo : Comprovante
+@enduml
+@startuml
+title SD - Devolucao atrasada (R5 + R2 + R3)
+actor Atendente
+Atendente -> TratadorDeDevolucao : registrarDevolucao(...)
+TratadorDeDevolucao -> FachadaDeCirculacao : registrarDevolucao(...)
+FachadaDeCirculacao -> Livro : devolver()
+FachadaDeCirculacao -> RepositorioMovimentacao : adicionarDevolucao / removerEmprestimo
+FachadaDeCirculacao -> UnidadeDeTrabalho : confirmar()
+FachadaDeCirculacao -> PublicadorDeDevolucao : publicar(EventoDevolucao)
+PublicadorDeDevolucao -> OuvinteInspecao : aoDevolver(e)
+PublicadorDeDevolucao -> OuvinteMulta : aoDevolver(e)
+OuvinteMulta -> ServicoDeMulta : emitir(e)
+ServicoDeMulta -> PoliticaDeMulta : calcular(diasAtraso)
+ServicoDeMulta -> ContratoCobranca : emitir(solicitacao)
+PublicadorDeDevolucao -> OuvinteIndicadores : aoDevolver(e)
+PublicadorDeDevolucao -> OuvinteEmail : aoDevolver(e)
+@enduml
+@startuml
+title SD - Renovacao com Command (R6 + R1)
+actor Atendente
+Atendente -> TratadorDeEmprestimo : renovarEmprestimo(idSolicitacao, ...)
+TratadorDeEmprestimo -> ExecutorDeSolicitacoes : executar(SolicitacaoDeRenovacao)
+alt id ainda nao executado
+  ExecutorDeSolicitacoes -> FachadaDeCirculacao : renovar(idLivro, idEstudante)
+  FachadaDeCirculacao -> Livro : renovar(emprestimo)
+  Livro -> EstadoEmprestado : renovar(livro, emprestimo)
+  note right: guarda numRenovacoes < 2\nantes de alterar o vencimento
+else id repetido
+  ExecutorDeSolicitacoes --> TratadorDeEmprestimo : comprovante anterior
+end
+@enduml
+@startuml
+title SD - Cadastro com Template Method (R7)
+actor Atendente
+Atendente -> TratadorDeEstudante : inserirEstudante(cpf, matricula)
+TratadorDeEstudante -> CadastroEstudante : incluir(dados)
+CadastroEstudante -> CadastroEstudante : buscarExistente
+CadastroEstudante -> CadastroEstudante : validar
+CadastroEstudante -> CadastroEstudante : verificarPreRequisitos (cpf existe?)
+CadastroEstudante -> CadastroEstudante : criar
+CadastroEstudante -> CadastroEstudante : armazenar
+CadastroEstudante -> CadastroEstudante : apresentar
+@enduml
