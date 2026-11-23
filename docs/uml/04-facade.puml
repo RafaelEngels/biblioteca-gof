@@ -1,6 +1,12 @@
 @startuml
 title R4 - Facade
-class FachadaDeCirculacao { +reservar()\n+efetivarEmprestimo()\n+renovar()\n+registrarDevolucao()\n+inspecionar() }
+class FachadaDeCirculacao {
+  +reservar()
+  +efetivarEmprestimo()
+  +renovar()
+  +registrarDevolucao()
+  +inspecionar()
+}
 class Comprovante <<record>>
 interface RepositorioRelacionamento
 interface RepositorioMovimentacao

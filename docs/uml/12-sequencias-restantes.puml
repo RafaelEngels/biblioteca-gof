@@ -1,0 +1,101 @@
+@startuml
+title SD R1 - Terceira renovacao recusada (State)
+actor Atendente
+Atendente -> TratadorDeEmprestimo : renovarEmprestimo(sol-3, ...)
+TratadorDeEmprestimo -> ExecutorDeSolicitacoes : executar(SolicitacaoDeRenovacao)
+ExecutorDeSolicitacoes -> FachadaDeCirculacao : renovar(idLivro, idEstudante)
+FachadaDeCirculacao -> Livro : renovar(emprestimo)
+Livro -> EstadoRenovado : renovar(livro, emprestimo)
+note right: numRenovacoes >= 2\nrecusa antes de alterar o vencimento
+EstadoRenovado --> Livro : false
+FachadaDeCirculacao -> UnidadeDeTrabalho : desfazer()
+FachadaDeCirculacao --> Atendente : RegraDeNegocioException (vencimento intacto)
+@enduml
+@startuml
+title SD R1 - Livro devolvido nao inspecionado nao pode ser reservado
+actor Atendente
+Atendente -> TratadorDeEmprestimo : reservarLivro(...)
+TratadorDeEmprestimo -> FachadaDeCirculacao : reservar(...)
+FachadaDeCirculacao -> Livro : reservar()
+Livro -> EstadoDevolvido : reservar(livro)
+EstadoDevolvido --> Livro : false (EstadoBase)
+FachadaDeCirculacao --> Atendente : RegraDeNegocioException (livro continua DEVOLVIDO)
+@enduml
+@startuml
+title SD R2 - Calculo da multa (Strategy)
+participant OuvinteMulta
+participant ServicoDeMulta
+participant ConfiguracaoAdministrativa
+participant PoliticaDeMulta
+participant Multa
+OuvinteMulta -> ServicoDeMulta : emitir(evento) [5 dias de atraso]
+ServicoDeMulta -> ConfiguracaoAdministrativa : politicaVigente()
+ConfiguracaoAdministrativa --> ServicoDeMulta : PoliticaOriginal ou PoliticaComTolerancia
+ServicoDeMulta -> PoliticaDeMulta : calcular(5)
+PoliticaDeMulta --> ServicoDeMulta : R$ 5,00 (original) / R$ 3,00 (tolerancia)
+ServicoDeMulta -> Multa : cria(valor, politicaAplicada)
+note right: sem atraso: valor 0, nao emite boleto
+@enduml
+@startuml
+title SD R3 - Mesma cobranca em dois bancos (Adapter)
+participant ServicoDeMulta
+participant ContratoCobranca
+participant AdaptadorBancoA
+participant BancoAApi
+participant AdaptadorBancoB
+participant BancoBApi
+ServicoDeMulta -> ContratoCobranca : emitir(R$ 7,00)
+ContratoCobranca -> AdaptadorBancoA : emitir
+AdaptadorBancoA -> BancoAApi : criarBoleto(700 centavos, cpf so digitos, data ISO)
+ContratoCobranca -> AdaptadorBancoB : emitir
+AdaptadorBancoB -> BancoBApi : registrarCobranca(7.00, cpf formatado, dd/MM/yyyy)
+note over ServicoDeMulta: o servico nao tem if por banco
+@enduml
+@startuml
+title SD R8 - Escolha da familia de acesso (Abstract Factory)
+participant Aplicacao
+participant Configuracao
+participant FabricaEmMemoria
+participant FabricaRelacional
+Aplicacao -> Configuracao : perfil()
+alt TESTE
+  Aplicacao -> FabricaEmMemoria : new
+  FabricaEmMemoria --> Aplicacao : unidade + 3 repositorios em memoria
+else PRODUCAO
+  Aplicacao -> FabricaRelacional : new(conexao)
+  FabricaRelacional --> Aplicacao : mesma UnidadeJdbc nos 3 repositorios MySQL
+end
+note over Aplicacao: escolhida uma unica vez
+@enduml
+@startuml
+title SD R9 - Cadeia de decoradores de consulta
+actor Atendente
+participant ConsultaComMedicao
+participant ConsultaComCache
+participant ConsultaAcervoOriginal
+Atendente -> ConsultaComMedicao : metadados("L1") [1a vez]
+ConsultaComMedicao -> ConsultaComCache : metadados("L1")
+ConsultaComCache -> ConsultaAcervoOriginal : metadados("L1")
+ConsultaAcervoOriginal --> ConsultaComCache : metadados
+note right of ConsultaComCache: guarda no cache
+Atendente -> ConsultaComMedicao : metadados("L1") [2a vez]
+ConsultaComMedicao -> ConsultaComCache : metadados("L1")
+ConsultaComCache --> ConsultaComMedicao : do cache (a medicao conta as duas)
+note over ConsultaComCache: estadoAtual() nunca usa cache,\na reserva usa Livro direto
+@enduml
+@startuml
+title SD R10 - Contagem e movimento na arvore do acervo (Composite)
+actor Atendente
+participant "unidade : Grupo" as U
+participant "secaoA : Grupo" as A
+participant "secaoB : Grupo" as B
+participant "item : ItemLivro" as I
+Atendente -> U : contarLivros()
+U -> A : contarLivros() [3 itens]
+U -> B : contarLivros() [2 itens]
+U --> Atendente : 5
+Atendente -> A : moverLivro("L1", secaoB)
+A -> A : remover(item)
+A -> B : adicionar(item) [recusa ciclo e livro duplicado]
+note over I: so o item muda de pai;\nLivro e Movimentacao nao sao tocados
+@enduml

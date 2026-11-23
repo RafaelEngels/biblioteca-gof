@@ -1,9 +1,16 @@
 @startuml
 title R6 - Command
-interface SolicitacaoDeCirculacao { +id()\n+autor()\n+criadaEm()\n+executar(f : FachadaDeCirculacao) : Comprovante }
+interface SolicitacaoDeCirculacao {
+  +id() : String
+  +autor() : String
+  +criadaEm() : Instant
+  +executar(f : FachadaDeCirculacao) : Comprovante
+}
 class SolicitacaoDeReserva <<record>>
 class SolicitacaoDeRenovacao <<record>>
-class ExecutorDeSolicitacoes { +executar(s) : Comprovante }
+class ExecutorDeSolicitacoes {
+  +executar(s : SolicitacaoDeCirculacao) : Comprovante
+}
 class FachadaDeCirculacao
 class TratadorDeEmprestimo
 SolicitacaoDeReserva ..|> SolicitacaoDeCirculacao

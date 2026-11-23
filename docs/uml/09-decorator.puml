@@ -1,6 +1,9 @@
 @startuml
 title R9 - Decorator
-interface ConsultaAcervo { +metadados(id) : Optional<MetadadosLivro>\n+estadoAtual(id) : Optional<String> }
+interface ConsultaAcervo {
+  +metadados(id : String) : Optional<MetadadosLivro>
+  +estadoAtual(id : String) : Optional<String>
+}
 class ConsultaAcervoOriginal
 class ConsultaComMedicao
 class ConsultaComCache

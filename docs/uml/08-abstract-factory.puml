@@ -1,6 +1,11 @@
 @startuml
 title R8 - Abstract Factory
-interface FabricaDeAcesso { +unidade()\n+livros()\n+movimentacao()\n+relacionamento() }
+interface FabricaDeAcesso {
+  +unidade() : UnidadeDeTrabalho
+  +livros() : RepositorioLivro
+  +movimentacao() : RepositorioMovimentacao
+  +relacionamento() : RepositorioRelacionamento
+}
 class FabricaEmMemoria
 class FabricaRelacional
 interface UnidadeDeTrabalho

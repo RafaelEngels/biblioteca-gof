@@ -1,18 +1,31 @@
 @startuml
 title R5 - Observer
-class PublicadorDeDevolucao { +registrar(o)\n+publicar(e : EventoDevolucao)\n+falhas() }
-interface OuvinteDeDevolucao { +aoDevolver(e : EventoDevolucao) }
-class EventoDevolucao <<record>> { idLivro, idEstudante, cpf, email, vencimento, dataDevolucao }
+class PublicadorDeDevolucao {
+  +registrar(o : OuvinteDeDevolucao)
+  +publicar(e : EventoDevolucao)
+  +falhas() : List<String>
+}
+interface OuvinteDeDevolucao {
+  +aoDevolver(e : EventoDevolucao)
+}
+class EventoDevolucao <<record>> {
+  idLivro
+  idEstudante
+  cpf
+  email
+  vencimento
+  dataDevolucao
+}
 class OuvinteInspecao
 class OuvinteMulta
 class OuvinteIndicadores
 class OuvinteEmail
+class FachadaDeCirculacao
 PublicadorDeDevolucao o-- "*" OuvinteDeDevolucao
 OuvinteInspecao ..|> OuvinteDeDevolucao
 OuvinteMulta ..|> OuvinteDeDevolucao
 OuvinteIndicadores ..|> OuvinteDeDevolucao
 OuvinteEmail ..|> OuvinteDeDevolucao
 PublicadorDeDevolucao ..> EventoDevolucao
-class FachadaDeCirculacao
 FachadaDeCirculacao --> PublicadorDeDevolucao : publica apos confirmar
 @enduml

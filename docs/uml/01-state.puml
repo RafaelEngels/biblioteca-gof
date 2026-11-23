@@ -1,7 +1,29 @@
 @startuml
 title R1 - State
-class Livro { -id : String\n-titulo : String\n+reservar() : boolean\n+emprestar() : boolean\n+renovar(e : Emprestimo) : boolean\n+devolver() : boolean\n+aprovarInspecao() : boolean\n+enviarParaReparo() : boolean\n+retornarDoReparo() : boolean\n+registrarLaudoIrrecuperavel() : boolean\n+setEstado(e : EstadoLivro) }
-interface EstadoLivro { +nome() : String\n+reservar(l : Livro) : boolean\n+emprestar(l : Livro) : boolean\n+renovar(l : Livro, e : Emprestimo) : boolean\n+devolver(l : Livro) : boolean\n+aprovarInspecao(l : Livro) : boolean\n+enviarParaReparo(l : Livro) : boolean\n+retornarDoReparo(l : Livro) : boolean\n+registrarLaudoIrrecuperavel(l : Livro) : boolean }
+class Livro {
+  -id : String
+  -titulo : String
+  +reservar() : boolean
+  +emprestar() : boolean
+  +renovar(e : Emprestimo) : boolean
+  +devolver() : boolean
+  +aprovarInspecao() : boolean
+  +enviarParaReparo() : boolean
+  +retornarDoReparo() : boolean
+  +registrarLaudoIrrecuperavel() : boolean
+  +setEstado(e : EstadoLivro)
+}
+interface EstadoLivro {
+  +nome() : String
+  +reservar(l : Livro) : boolean
+  +emprestar(l : Livro) : boolean
+  +renovar(l : Livro, e : Emprestimo) : boolean
+  +devolver(l : Livro) : boolean
+  +aprovarInspecao(l : Livro) : boolean
+  +enviarParaReparo(l : Livro) : boolean
+  +retornarDoReparo(l : Livro) : boolean
+  +registrarLaudoIrrecuperavel(l : Livro) : boolean
+}
 abstract class EstadoBase
 Livro o-- "1" EstadoLivro : estado
 EstadoBase ..|> EstadoLivro

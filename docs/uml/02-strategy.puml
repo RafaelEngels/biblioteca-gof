@@ -1,12 +1,25 @@
 @startuml
 title R2 - Strategy
-interface PoliticaDeMulta { +nome() : String\n+calcular(diasAtraso : long) : BigDecimal }
+interface PoliticaDeMulta {
+  +nome() : String
+  +calcular(diasAtraso : long) : BigDecimal
+}
 class PoliticaOriginal
 class PoliticaComTeto
 class PoliticaComTolerancia
-class ConfiguracaoAdministrativa { +politicaVigente() : PoliticaDeMulta\n+definirPolitica(p) }
-class ServicoDeMulta { +emitir(e : EventoDevolucao) : Optional<Multa>\n+receberNotificacao(n : Object) : boolean }
-class Multa { -valor : BigDecimal\n-politicaAplicada : String\n-situacao : String }
+class ConfiguracaoAdministrativa {
+  +politicaVigente() : PoliticaDeMulta
+  +definirPolitica(p : PoliticaDeMulta)
+}
+class ServicoDeMulta {
+  +emitir(e : EventoDevolucao) : Optional<Multa>
+  +receberNotificacao(n : Object) : boolean
+}
+class Multa {
+  -valor : BigDecimal
+  -politicaAplicada : String
+  -situacao : String
+}
 PoliticaOriginal ..|> PoliticaDeMulta
 PoliticaComTeto ..|> PoliticaDeMulta
 PoliticaComTolerancia ..|> PoliticaDeMulta

@@ -1,10 +1,17 @@
 @startuml
 title R3 - Adapter
-interface ContratoCobranca { +emitir(s : SolicitacaoCobranca) : String\n+traduzir(n : Object) : NotificacaoPagamento }
+interface ContratoCobranca {
+  +emitir(s : SolicitacaoCobranca) : String
+  +traduzir(n : Object) : NotificacaoPagamento
+}
 class AdaptadorBancoA
 class AdaptadorBancoB
-class BancoAApi { +criarBoleto(centavos, doc, ref, dataIso) }
-class BancoBApi { +registrarCobranca(reais, cpfFmt, ref, dataBr) }
+class BancoAApi {
+  +criarBoleto(centavos, doc, ref, dataIso)
+}
+class BancoBApi {
+  +registrarCobranca(reais, cpfFmt, ref, dataBr)
+}
 class ServicoDeMulta
 AdaptadorBancoA ..|> ContratoCobranca
 AdaptadorBancoB ..|> ContratoCobranca
