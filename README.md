@@ -75,11 +75,7 @@ Modelos UML: pasta [`docs/uml`](docs/uml) e o arquivo Astah da equipe.
 
 ## Uso de LLMs
 
-_(A equipe deve conferir e ajustar esta seção com o que realmente aconteceu.)_
-
-- Ferramenta: **Claude (Anthropic)**, pelo chat do claude.ai.
-- Partes geradas com apoio do modelo: estrutura do projeto Maven, código Java dos dez padrões,
-  testes JUnit, `schema.sql`, README, rastreabilidade, guia de arguição e diagramas PlantUML.
-- Os nomes de classes e operações foram extraídos do arquivo Astah da equipe (`PROJETO_2.asta`).
-- Detalhes dos pedidos e do que foi aceito/corrigido/descartado: [`REGISTRO_LLM.md`](REGISTRO_LLM.md).
-- Todo o código deve ser explicável por qualquer integrante (ver [`GUIA_ARGUICAO.md`](GUIA_ARGUICAO.md)).
+- Ferramenta e modelo: **Claude Sonnet 5.5** (Anthropic), pelo chat do claude.ai.
+- O Claude gerou o código-fonte Java dos dez padrões, os testes JUnit, o `schema.sql`, o README, a tabela de rastreabilidade, o guia de arguição e os diagramas de referência em PlantUML. Os nomes de classes e operações foram extraídos do arquivo Astah da equipe (`PROJETO_2.asta`).
+- A equipe revisou o código gerado, executou os testes (`mvn test`, 40 testes aprovados) e a demonstração, e confere que todos os integrantes sabem explicar o código.
+- Resumo dos pedidos e das decisões da equipe: [`REGISTRO_LLM.md`](REGISTRO_LLM.md).
