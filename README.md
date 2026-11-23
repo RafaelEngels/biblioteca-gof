@@ -1,8 +1,8 @@
 # Biblioteca GoF — Empréstimo de livros com 10 padrões de projeto
 
-PUCPR · Modelagem de Sistemas Computacionais · Prof. Edson Emílio Scalabrin · Turma A – 2S – 2026
+PUCPR · Modelagem de Sistemas Computacionais · Prof. Edson Emílio Scalabrin · Turma 4°U – 2026
 
-Equipe: Rafael Engel, Gabriel Henrique de Alves, Isabella Schwab e Gabriel Colasso
+Equipe: Gabriel Colasso, Gabriel Henrique de Alves, Isabella Schwab e Rafael Engel 
 
 Implementação executável do sistema de reserva, empréstimo, renovação e devolução de livros
 (continuação do Trabalho 02), com os dez padrões GoF pedidos.
